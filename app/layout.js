@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-         <ClerkProvider>
+         <ClerkProvider >
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           <main className="min-h-screen">
             {children}
           </main>
-          <footer className="bg-muted/50 py-14">
+          <footer className="bg-muted/50 py-14 mt-3">
             <p className="flex flex-col justify-center items-center">Made with ❤️ by Next.Js</p>
           </footer>
           {/*footer*/}

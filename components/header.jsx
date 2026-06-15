@@ -6,8 +6,13 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from './ui/dropdown-menu'
-import { LayoutDashboardIcon } from 'lucide-react'
+import { ChevronDown, FileText, GraduationCap, LayoutDashboardIcon, PenBox, StarsIcon } from 'lucide-react'
+import ThemeToggle from './theme-toggle'
+import { Button } from './ui/button'
 
 const Header = () => {
   return (
@@ -18,13 +23,13 @@ const Header = () => {
         <div className="flex items-center gap-8">
           {/* Logo */}
           <Link href="/">
-            <div className="w-[200px] h-[60px] logo-release logo-hue">
+            <div className="w-[200px] h-[60px] relative logo-release logo-hue">
               <Image
                 src="/logo.png"
                 width={200}
                 height={60}
                 alt="SensAI"
-                className="logo-default block dark:hidden filter invert"
+                className="logo-default block dark:hidden filter invert object-contain"
               />
 
               <Image
@@ -32,15 +37,15 @@ const Header = () => {
                 width={200}
                 height={60}
                 alt="SensAI"
-                className="logo-default hidden dark:block"
+                className="logo-default hidden dark:block object-contain"
               />
 
               <Image
-                src="/logo-colored.png"
+                src="/logo.png"
                 width={200}
                 height={60}
                 alt="SensAI color"
-                className="logo-colored hidden"
+                className="logo-colored hidden object-contain"
               />
             </div>
           </Link>
@@ -53,7 +58,7 @@ const Header = () => {
                 aria-label="Industry insights"
               >
                 <LayoutDashboardIcon className="h-4 w-4" />
-                <span>Industry Insights</span>
+                <span className='hidden md:block'>Industry Insights</span>
               </button>
             </DropdownMenuTrigger>
 
@@ -71,10 +76,74 @@ const Header = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+
+          <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+      <Button> <StarsIcon/>
+      <span className='hidden md:block'>  Growth Tools</span>
+      <ChevronDown></ChevronDown>
+    
+      
+      </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+      <DropdownMenuGroup>
+        <DropdownMenuItem>
+        <Link href={"/resume"} className='flex items-center gap-2'>
+        <FileText />
+        <span>Build Resume</span>
+        
+        </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem>
+        <Link href={"/ai-cover-letter"} className='flex items-center gap-2'>
+        <PenBox />
+        <span>Cover Letter</span>
+        </Link>
+        </DropdownMenuItem>
+
+          <DropdownMenuItem>
+        <Link href={"/interview"} className='flex items-center gap-2'>
+        <GraduationCap />
+        <span>Interview Prep</span>
+        </Link>
+        </DropdownMenuItem>
+
+
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem>Team</DropdownMenuItem>
+        <DropdownMenuItem>Subscription</DropdownMenuItem>
+      </DropdownMenuGroup>
+      </DropdownMenuContent>
+      </DropdownMenu>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
 
         {/* Right Section */}
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <Show when="signed-out">
             <SignInButton />
 
