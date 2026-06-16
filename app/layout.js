@@ -3,6 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider"
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
+import Background from "@/components/Background";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +39,7 @@ export default function RootLayout({ children }) {
           {/*header*/}
           <Header/>
           <main className="min-h-screen">
+            <Background/>
             {children}
           </main>
           <footer className="bg-muted/50 py-14 mt-3">
