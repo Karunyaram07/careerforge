@@ -13,8 +13,10 @@ import {
 import { ChevronDown, FileText, GraduationCap, LayoutDashboardIcon, PenBox, StarsIcon } from 'lucide-react'
 import ThemeToggle from './theme-toggle'
 import { Button } from './ui/button'
+import { checkUser } from '@/lib/checkUser'
 
-const Header = () => {
+const Header = async() => {
+  await checkUser();
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50">
       <nav className="container mx-auto flex h-16 items-center justify-between">
