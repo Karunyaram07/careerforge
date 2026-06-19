@@ -39,9 +39,9 @@ export async function updateUser(data){
                         industry:data.industry,
                         salaryRanges:[],//default
                         growthRate:0,
-                        demandLevel:"Medium",
+                        demandLevel:"MEDIUM",
                         topSkills:[],
-                        marketOutlook:"Neutral",
+                        marketOutlook:"NEUTRAL",
                         keyTrends:[],
                         recommendedSkills:[],
                         nextUpdate:new Date(Date.now()+7*24*60*60*1000),//1 week from now
@@ -67,7 +67,7 @@ export async function updateUser(data){
             ,{timeout:10000}
             
         );
-        return result.user
+        return {success:true,...result}
         
     } catch (error) {
         console.error("Failed to update user and industry",error.message);
@@ -109,7 +109,7 @@ export async function getUserOnboardingStatus(){
         
     } catch (error) {
         console.error("Failed to fetch onboarding status",error.message);
-        throw new Error("Failed to fetch onboarding status");
+        throw new Error("Failed to fetch onboarding status"+error.message);
         
         
     }

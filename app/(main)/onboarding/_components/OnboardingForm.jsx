@@ -1,4 +1,6 @@
     "use client"
+import { updateUser } from '@/actions/user'
+import { useFetch } from '@/app/hooks/useFetch'
     import { onboardingSchema } from '@/app/lib/schema'
 import { Button } from '@/components/ui/button'
     import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -8,16 +10,43 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
     import { zodResolver } from '@hookform/resolvers/zod'
     import { useRouter } from 'next/navigation'
-    import React, { useState } from 'react'
+    import React, { useEffect, useState } from 'react'
     import { useForm } from 'react-hook-form'
+    import { toast } from "sonner";
+
+import { Loader2 } from 'lucide-react'
     const OnboardingForm = ({industries}) => {
         const [selectedIndustry,setSelectedIndustry]=useState(null);
         const router=useRouter()
         const onSubmit =async(values)=>{
-            console.log(values);
-            
+            try {
+                const formattedIndustry =`${values.industry}-${values.subIndustry.toLowerCase().replace(/ /g, "-")}`;
+                await updateUserFn({...values,
+                    industry:formattedIndustry,
+                });
+                
+            } catch (error) {
+                console.error("Onboarding error: ",error);
+            };
 
+
+                //?values is the object coming from React Hook Form:
+
+                /* ?{
+                ? industry: "software",
+                ? subIndustry: "web-development",
+                ? experience: "2",
+                 ?skills: "React, Next.js",
+                 ?bio: "Frontend Developer"
+                ? } */
+            
+            console.log(values);
         }
+        const {data:updatedData,
+            fn:updateUserFn,
+            loading:updateLoading,
+        
+        }=useFetch(updateUser)
         const{
             register,
             handleSubmit,
@@ -27,7 +56,23 @@ import { Textarea } from '@/components/ui/textarea'
         
         }=useForm({
             resolver:zodResolver(onboardingSchema)});
-        const watchIndustry=watch("industry")
+        const watchIndustry=watch("industry")   // If industry is selcted only it has to show Specialisation field so take a watch on industry 
+        // by using watch param by useForm 
+
+        useEffect(()=>{
+            if(updatedData?.success && !updateLoading){
+                toast.success("Profile Updated Successfully")
+                router.push('/dashboard')
+                router.refresh();
+                
+            }
+
+        },[updatedData,updateLoading])
+
+
+
+
+
     return (
         <div className='flex items-center justify-center bg-background'>
             <Card className={'w-full max-w-lg mt-10 mx-2 mb-10'}>
@@ -39,7 +84,16 @@ import { Textarea } from '@/components/ui/textarea'
         </CardDescription>
     </CardHeader>
     <CardContent>
-        <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
+        <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>   
+
+            {/*
+            //!Handle Submit contains all the field values as handleSubmit is provided by the React-Hook-Forms..
+             Internally it have the code to collect all of the fields. Now we will 
+             //*1.take a function and take the collected values in that via values
+             //*2.And sending them as a parameter to updateUser Server Action then that action will update our database...}}
+            
+            */}
+            
             <div className='space-y-2'>
                 <Label htmlFor='industry'>Industry</Label>
 
@@ -172,6 +226,29 @@ import { Textarea } from '@/components/ui/textarea'
                 {...register("bio")}
                 
                 />
+
+
+                {/* 
+
+// * register()
+// * "React Hook Form, please track this field and store its value."
+
+// * handleSubmit()
+// * "Collect all registered field values,
+// * validate them using the resolver (e.g., Zod),
+// * and pass the final validated object to onSubmit()."
+
+// ! Because React Hook Form manages form state internally,
+// ! we don't need separate useState() hooks for every field.
+
+// ? Instead of this: we have to do like this but * React Hook Form automatically tracks and updates these values.
+// const [industry, setIndustry] = useState("");
+// const [skills, setSkills] = useState("");
+// const [bio, setBio] = useState("");
+
+
+*/}
+        
                
                 
 
@@ -188,7 +265,10 @@ import { Textarea } from '@/components/ui/textarea'
 
 
 
-        <Button type='submit' className={'w-full'}>
+        <Button type='submit' className={'w-full'} disabled={updateLoading}>
+        {updateLoading ? (<>
+            <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
+            Saving..</>):("Complete Profile")}
             Complete Profile
         </Button>
 
@@ -203,3 +283,10 @@ import { Textarea } from '@/components/ui/textarea'
     }
 
     export default OnboardingForm
+
+
+
+
+
+
+

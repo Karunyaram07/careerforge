@@ -4,6 +4,7 @@ import { ThemeProvider } from "../components/theme-provider"
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import Background from "@/components/Background";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const geistSans = Geist({
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
             <Background/>
             {children}
           </main>
+          <Toaster richColors/>
           <footer className="bg-muted/50 py-14 mt-3">
             <p className="flex flex-col justify-center items-center">Made with ❤️ by Next.Js</p>
           </footer>
