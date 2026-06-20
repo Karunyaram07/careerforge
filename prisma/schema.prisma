@@ -39,7 +39,7 @@ model Assessment {
   userId        String
   user          User      @relation(fields: [userId], references: [id])
   quizScore     Float     // Overall quiz score
-  questions     Json[]    // Array of {question, answer, userAnswer, isCorrect}
+  questions     Json[]    //! Array of {question, answer, userAnswer, isCorrect} Store any JSON array here. JSON is the flexible storage
   category      String    // "Technical", "Behavioral", etc.
   improvementTip String?  // AI-generated improvement tip
   createdAt     DateTime  @default(now())

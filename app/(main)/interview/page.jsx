@@ -1,9 +1,16 @@
-import React from 'react'
+"use client";
+import React, { Suspense } from 'react'
+import { BarLoader } from 'react-spinners';
 
-const InterviewPage = () => {
+const Layout = ({ children }) => {
   return (
-    <div>InterviewPage</div>
-  )
-}
+    <div className="px-5">
 
-export default InterviewPage
+      <Suspense fallback={<BarLoader width="100%" color="#6C47FF" />}>
+        {children}
+      </Suspense>
+    </div>
+  );
+};
+
+export default Layout;

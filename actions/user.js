@@ -7,7 +7,7 @@ import { select } from "framer-motion/client";
 import { generateAIInsights } from "./dashboard";
 
 export async function updateUser(data){
-    //Check for userId of Clerk in prisma
+    //!Check for userId of Clerk in prisma
     const {userId}=await auth();
     if(!userId){
         throw new Error("User Not Authorised")
@@ -52,7 +52,7 @@ export async function updateUser(data){
         //!create insights using GEMINI AI if user have no industry insights
                             
                             const insights=await generateAIInsights(data.industry)
-                            //!Saving the AI Genearted Response to the Database
+                            //! Saving the AI Genearted Response to the Database
                             industryInsight = await tx.industryInsight.create({
                                 data:{
                                     industry:data.industry,
