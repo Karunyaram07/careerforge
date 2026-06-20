@@ -1,9 +1,9 @@
 import { serve } from "inngest/next";
 import {inngest} from '@/lib/inngest/client.js'
-import { processTask } from "@/lib/inngest/function";
+import { generateIndustryInsights} from "@/lib/inngest/function";
 
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [processTask],
+  functions: [generateIndustryInsights],
 });
