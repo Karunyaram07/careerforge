@@ -8,7 +8,18 @@ import {
   XCircle,
 } from 'lucide-react';
 
-const QuizResult = ({result, hideStartNew=false, onStartNew}) => {
+const QuizResult = ({result, hideStartNew=false, onStartNew}) => {   //! Passing onStartNew Function If user wants to Start The New Quiz If he wants
+         //! result is resultData
+    //! data:{
+    //!             userId:user.id,
+    //!             quizScore: score,
+    //!             questions:questionResults,
+    //!             category:"Technical",
+    //!             improvementTip,
+    //!         }
+
+    //!Passing hideStartNew Variable to know whether we have to show the Start New Quiz Button user want to see Assessment History 
+    //! then it has to off. If not we will pass the argument as hideStartNew=true 
  if(!result) return null; 
  return (
     <div className='mx-auto'>
@@ -34,7 +45,24 @@ const QuizResult = ({result, hideStartNew=false, onStartNew}) => {
             </div>
         )}
 
-        {/* //Returning Each Question answers, with user selected answer */}
+        {/*
+         //Returning Each Question answers, with user selected answer 
+         //! We have questions array from that we can fetch the user selected answer , Original Correct Answer
+          //!resultData is 
+    //! data:{
+    //!             userId:user.id,
+    //!             quizScore: score,
+    //*             questions:[questionResults Array this contains 
+    //*                  question:q.question,
+    //*                  answer:q.correctAnswer,
+    //*                  userAnswer:answers[index],!
+    //*                  isCorrect: q.correctAnswer===answers[index],
+    //*                  explanation:q.explanation]
+    //!             category:"Technical",
+    //!             improvementTip,
+    //!         }
+          */}
+
         <div className='space-y-4'>
             <h3 className='font-medium'>Question Review</h3>
             {result.questions.map((q,index)=>(
@@ -75,6 +103,14 @@ const QuizResult = ({result, hideStartNew=false, onStartNew}) => {
  */}
 
     {!hideStartNew && ( 
+
+        
+        // const startNewQuiz =()=>{
+        // setCurrentQuestion(0);
+        // setAnswers([]);
+        // setShowExplanation(false);
+        // generateQuizFn();
+        // setResultData(null) //!Coming From saveQuizResult Server Action}
 
         <CardFooter>
           <Button onClick={onStartNew} className="w-full">

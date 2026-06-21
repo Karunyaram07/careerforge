@@ -1,16 +1,23 @@
-"use client";
-import React, { Suspense } from 'react'
-import { BarLoader } from 'react-spinners';
+import { getAssessments } from '@/actions/interview';
+import React from 'react'
+import StatsCards from './_components/StatsCards';
+import PerformanceChart from './_components/PerformanceChart';
+import QuizList from './_components/QuizList';
 
-const Layout = ({ children }) => {
+const InterviewPage = async() => {
+  const assessments = await getAssessments();
   return (
-    <div className="px-5">
+    <div>
+      <h1 className='text-6xl font-bold text-foreground mb-5'>
+        Interview Preparation
+        </h1>
+      <div>
+        <StatsCards assessments={assessments} />
+        <PerformanceChart assessments={assessments} />
+        <QuizList assessments={assessments} />
+      </div>
+      </div>
+  )
+}
 
-      <Suspense fallback={<BarLoader width="100%" color="#6C47FF" />}>
-        {children}
-      </Suspense>
-    </div>
-  );
-};
-
-export default Layout;
+export default InterviewPage;

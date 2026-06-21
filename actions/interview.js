@@ -164,7 +164,7 @@ export async function saveQuizResult(questions,answers,score){
                 improvementTip,
             }
         }); 
-        return assessment;
+        return assessment; //!Returning the Saved Record(or) Row Of the Assessment......
         
      } catch (error) {
         console.error("Error saving quiz result:",error);
@@ -176,3 +176,40 @@ export async function saveQuizResult(questions,answers,score){
 
 
     }
+
+export async function getAssessments(){
+     //!Check for userId of Clerk in prisma
+     //! Number of Assessment Records in Database = Number of Assessments Taken by the User
+     //! So Fetching All Those Records......
+        const {userId}=await auth();
+        if(!userId){
+            throw new Error("User Not Authorised")
+        }
+        const user = await prisma.user.findUnique({
+        where: { clerkUserId: userId },
+        select:{
+            industry:true,
+            skills:true,
+        },
+        });
+    
+        if(!user){
+            throw new Error("User Not Found");
+        }
+
+        try {
+            const assessments = await prisma.assessment.findMany({
+                where:{
+                    userId:user.id,
+                },
+                orderBy:{
+                    createdAt:"asc",
+                },
+            });
+            return assessments;
+            
+        } catch (error) {
+            console.error("Error fetching assessments: ",error);
+            throw new Error("Failed to fetch assessments");                      
+        }
+}

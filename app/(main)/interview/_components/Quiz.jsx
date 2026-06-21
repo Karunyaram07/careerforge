@@ -18,24 +18,45 @@ const Quiz = () => {
     const [showExplanation,setShowExplanation]=useState(false)
 
     const startNewQuiz =()=>{
-        setCurrentQuestion(0);
+        // setCurrentQuestion(0);
         setAnswers([]);
         setShowExplanation(false);
         generateQuizFn();
         setResultData(null) //!Coming From saveQuizResult Server Action
     }
+
     const {loading:generatingQuiz,
         fn:generateQuizFn,
         data:quizData,
     } = useFetch(generateQuiz);
+//! quizData is   "questions": [
+//!         {
+//!           "question": "string",
+//!           "options": ["string", "string", "string", "string"],
+//!           "correctAnswer": "string",
+//!           "explanation": "string"
+//!         }
     
     const {loading:savingResult,
         fn:saveQuizResultFn,
         data:resultData,
         setData:setResultData,
-    } = useFetch(saveQuizResult);
+    } = useFetch(saveQuizResult);       
+     //!resultData is 
+    //! data:{
+    //!             userId:user.id,
+    //!             quizScore: score,
+    //*             questions:[questionResults Array this contains 
+    //*                  question:q.question,
+    //*                  answer:q.correctAnswer,
+    //*                  userAnswer:answers[index],!
+    //*                  isCorrect: q.correctAnswer===answers[index],
+    //*                  explanation:q.explanation]
+    //!             category:"Technical",
+    //!             improvementTip,
+    //!         }
 
-    console.log(resultData);
+    
     
 
     
@@ -73,7 +94,9 @@ const Quiz = () => {
     if(resultData){
         return(
             <div className='mx-2'>
-                <QuizResult result={resultData} onStartNew={startNewQuiz}/>
+                <QuizResult result={resultData} onStartNew={startNewQuiz}
+                //! Passing onStartNew Function If user wants to Start The New Quiz If he wants
+                />
             </div>
         )
     }
@@ -146,7 +169,7 @@ const Quiz = () => {
 
         const score=calculateScore();;
         try {
-            await saveQuizResultFn(quizData,answers,score);
+            await saveQuizResultFn(quizData,answers,score);  //!Saving the Assessment Results to the Assessment Table of Database
             toast.success("Quiz Completed");
         } catch (error) {
             toast.error("Failed to Save the Quiz Results")  
@@ -164,13 +187,17 @@ const Quiz = () => {
           </CardHeader>
           <CardContent className={"space-y-4"}>
             <p className='text-lg font-medium'>
-                {question.question}
+                 {/* //! question= quizData[0];
+                  */}
+                {question.question}   
             </p>
 
             <RadioGroup 
             
             onValueChange={handleAnswer}
-            value={answers[currentQuestion]}
+            value={answers[currentQuestion]} 
+            // ! Tracking the User Selected Answer in the array answers[0] for first Question and
+            //!  saving using the handleAnswer
             className={"space-y-2"}
             
             >
@@ -195,7 +222,7 @@ const Quiz = () => {
 
           </CardContent>
           <CardFooter>
-             {/* //!If we have not selected show Selection till now, 
+             {/* //!If we have selected the option only, 
              //!then we will show the 'Show Explanation button'
               */}
              {!showExplanation &&(
@@ -203,11 +230,11 @@ const Quiz = () => {
                 onClick={()=>setShowExplanation(true)}
                 variant='outline'
 
-                u
+                
                 // ! The answers array is not updated it means
                 // ! the answer is not selected by user
                 // ! Until user selects his answer don't show the explanation
-                m
+                
                 disabled={!answers[currentQuestion]} 
                 
                 >
@@ -217,9 +244,12 @@ const Quiz = () => {
              )}
 
              <Button
-             onClick={handleNext}
+             onClick={handleNext} 
              className={'ml-auto'}
-             disabled={!answers[currentQuestion] || savingResult}
+             disabled={!answers[currentQuestion] || savingResult} //!loading:savingResult by the saveQuizResults Function
+             //!Next Question have to Move to Next Question
+             //!Finish Quiz Have to Save the Quiz results
+             
              >
                 {savingResult && (
                     <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
