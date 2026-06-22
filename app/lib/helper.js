@@ -1,0 +1,19 @@
+export function entriesToMarkdown(entries, type) {
+  if (!entries?.length) return "";
+
+  return (
+    `## ${type}\n\n` +
+    entries
+      .map((entry) => {
+        const dateRange = entry.current
+          ? `${entry.startDate} - Present`
+          : `${entry.startDate} - ${entry.endDate}`;
+
+        return `### ${entry.title} @ ${entry.organization}
+${dateRange}
+
+${entry.description}`;
+      })
+      .join("\n\n")
+  );
+}

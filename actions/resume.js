@@ -6,7 +6,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 export async function saveResume(content) {
   const { userId } = await auth();
@@ -57,7 +57,12 @@ export async function getResume() {
   });
 }
 
-export async function improveWithAI({ current, type }) {
+export async function improveWithAI({ currentdesc, type }) {
+
+    //! Passing the current description field of entry Schema and 
+    //! what is the type of that like experience,work or education
+
+
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -73,7 +78,7 @@ export async function improveWithAI({ current, type }) {
   const prompt = `
     As an expert resume writer, improve the following ${type} description for a ${user.industry} professional.
     Make it more impactful, quantifiable, and aligned with industry standards.
-    Current content: "${current}"
+    Current content: "${currentdesc}"
 
     Requirements:
     1. Use action verbs
