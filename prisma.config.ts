@@ -2,7 +2,7 @@
 // npm install --save-dev prisma dotenv
 
 
-
+import "dotenv/config";
 import { defineConfig } from "prisma/config";
 import { PrismaNeon } from "@prisma/adapter-neon";
 
@@ -11,10 +11,9 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   migrate: {
     adapter: () => {
-      const adapter = new PrismaNeon({
+      return new PrismaNeon({
         connectionString: process.env.DATABASE_URL!,
       });
-      return adapter;
     },
   },
 });
